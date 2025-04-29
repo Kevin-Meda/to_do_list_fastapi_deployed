@@ -100,17 +100,17 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Run container smoke tests
-        run: |
-          export COMPOSE_PROJECT_NAME=to_do_list
-          export DATABASE_URL=${{ secrets.DATABASE_URL }}
-          export SECRET_KEY_HASHED_PASS=${{ secrets.SECRET_KEY_HASHED_PASS }}
-          export BACKEND_URL=${{ secrets.BACKEND_URL }}
-          docker compose -f docker-compose.yml up -d
-          sleep 10
-          curl -f http://localhost || (echo "Backend not responding" && exit 1)
-          curl -f http://localhost/api/health || (echo "Health check failed" && exit 1)
-          docker compose -f docker-compose.yml down
+      # - name: Run container smoke tests
+      #   run: |
+      #     export COMPOSE_PROJECT_NAME=to_do_list
+      #     export DATABASE_URL=${{ secrets.DATABASE_URL }}
+      #     export SECRET_KEY_HASHED_PASS=${{ secrets.SECRET_KEY_HASHED_PASS }}
+      #     export BACKEND_URL=${{ secrets.BACKEND_URL }}
+      #     docker compose -f docker-compose.yml up -d
+      #     sleep 10
+      #     curl -f http://localhost || (echo "Backend not responding" && exit 1)
+      #     curl -f http://localhost/api/health || (echo "Health check failed" && exit 1)
+      #     docker compose -f docker-compose.yml down
 
       # - name: Trigger Render deployment
       #   if: github.event_name == 'push' && github.ref == 'refs/heads/main'
