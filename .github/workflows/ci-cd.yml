@@ -26,6 +26,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Set lowercase repository owner
+        run: |
+          echo "REPO_OWNER=$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -65,8 +69,8 @@ jobs:
           context: ./backend
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner | lower }}/backend:${{ github.sha }}
-            ghcr.io/${{ github.repository_owner | lower }}/backend:latest
+            ghcr.io/${{ env.REPO_OWNER }}/backend:${{ github.sha }}
+            ghcr.io/${{ env.REPO_OWNER }}/backend:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
           build-args: |
@@ -80,8 +84,8 @@ jobs:
           context: ./frontend
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner | lower }}/frontend:${{ github.sha }}
-            ghcr.io/${{ github.repository_owner | lower }}/frontend:latest
+            ghcr.io/${{ env.REPO_OWNER }}/frontend:${{ github.sha }}
+            ghcr.io/${{ env.REPO_OWNER }}/frontend:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -91,8 +95,8 @@ jobs:
           context: ./nginx
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner | lower }}/nginx:${{ github.sha }}
-            ghcr.io/${{ github.repository_owner | lower }}/nginx:latest
+            ghcr.io/${{ env.REPO_OWNER }}/nginx:${{ github.sha }}
+            ghcr.io/${{ env.REPO_OWNER }}/nginx:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
