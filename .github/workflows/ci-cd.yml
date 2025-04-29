@@ -90,7 +90,7 @@ jobs:
           cache-to: type=gha,mode=max
 
       - name: Build and push nginx container
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v6 
         with:
           context: ./nginx
           push: true
