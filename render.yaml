@@ -1,0 +1,41 @@
+# render.yaml
+services:
+  - name: backend
+    type: web
+    env: docker
+    plan: standard-1             # choose Starter or Standard-1 depending on your needs
+    branch: main
+    dockerfilePath: backend/Dockerfile
+    envFilePath: .env            # pull all your .env vars
+    port: 8000                   # corresponds to EXPOSE 8000
+    healthCheckPath: /docs       # swagger docs endpoint (optional)
+    # any extra build args or envVars can go here
+
+  - name: frontend
+    type: web
+    env: docker
+    plan: standard-1
+    branch: main
+    dockerfilePath: frontend/Dockerfile
+    envFilePath: .env            # same .env (streamlit will pick up any API keys etc)
+    port: 8501                   # corresponds to EXPOSE 8501
+    healthCheckPath: /           # simple health check
+    # if you need to bake in an API URL at build-time, you can add:
+    # buildCommand: |
+    #   export STREAMLIT_API_URL=https://backend-your-app.onrender.com
+    #   echo "Building with API URL $STREAMLIT_API_URL"
+  
+  - name: nginx
+    type: web
+    env: docker
+    plan: starter
+    branch: main
+    dockerfilePath: nginx/Dockerfile
+    port: 80                     # listen 80 in container
+    healthCheckPath: /           # will proxy through to frontend/backend
+    dependsOn:
+      - backend
+      - frontend
+    # if you want to inject the actual hostnames into nginx.conf, 
+    # you can switch to nginx.conf.template + env substitution,
+    # or just leave as-is if you’ll proxy by internal Render service names.
