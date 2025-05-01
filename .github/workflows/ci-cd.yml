@@ -114,7 +114,7 @@ jobs:
 
       - name: Trigger Render deployment
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: |
+        run: |  
           curl -X POST \
           -H "Authorization: Bearer ${{ secrets.RENDER_API_TOKEN }}" \
           -H "Content-Type: application/json" \
