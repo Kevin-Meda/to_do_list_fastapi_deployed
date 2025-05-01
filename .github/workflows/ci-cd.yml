@@ -112,11 +112,11 @@ jobs:
       #     curl -f http://localhost/api/health || (echo "Health check failed" && exit 1)
       #     docker compose -f docker-compose.yml down
 
-      # - name: Trigger Render deployment
-      #   if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-      #   run: |
-      #     curl -X POST \
-      #     -H "Authorization: Bearer ${{ secrets.RENDER_API_TOKEN }}" \
-      #     -H "Content-Type: application/json" \
-      #     -d '{"serviceId": "${{ secrets.RENDER_SERVICE_ID }}"}' \
-      #     https://api.render.com/v1/services/${{ secrets.RENDER_SERVICE_ID }}/deploys
+      - name: Trigger Render deployment
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          curl -X POST \
+          -H "Authorization: Bearer ${{ secrets.RENDER_API_TOKEN }}" \
+          -H "Content-Type: application/json" \
+          -d '{"serviceId": "${{ secrets.RENDER_SERVICE_ID }}"}' \
+          https://api.render.com/v1/services/${{ secrets.RENDER_SERVICE_ID }}/deploys
